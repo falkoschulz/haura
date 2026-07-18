@@ -1,0 +1,44 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Share+Tech+Mono&family=Space+Grotesk:wght@300..700&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-serif: "Playfair Display", Georgia, serif;
+  --font-sans: "Plus Jakarta Sans", system-ui, sans-serif;
+  --font-space: "Space Grotesk", sans-serif;
+  --font-digital: "Share Tech Mono", monospace;
+  --font-mono: "JetBrains Mono", monospace;
+  --color-elegant-bg: #050506;
+}
+
+/* Custom extra utilities or glow filters */
+.glow-time-morning {
+  text-shadow: 0 0 25px rgba(129, 140, 248, 0.35);
+}
+.glow-time-afternoon {
+  text-shadow: 0 0 25px rgba(56, 189, 248, 0.35);
+}
+.glow-time-evening {
+  text-shadow: 0 0 25px rgba(139, 92, 246, 0.35);
+}
+.glow-time-night {
+  text-shadow: 0 0 25px rgba(99, 102, 241, 0.4);
+}
+
+/* Custom digital segment styling or background tweaks */
+@keyframes pulse-subtle {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+.animate-pulse-subtle {
+  animation: pulse-subtle 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Elegant dark text gradient selection class */
+.elegant-text-gradient {
+  background: linear-gradient(to bottom, #f4f4f5 15%, #71717a 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+
