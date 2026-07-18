@@ -100,6 +100,16 @@ VITE_HA_ENTITY_INDOOR_TEMP="sensor.indoor_temperature"  # Indoor temperature sen
 VITE_HA_ENTITY_OUTDOOR_TEMP="sensor.outdoor_temperature" # Outdoor temperature sensor (°C/°F)
 ```
 
+### 🛠️ Interactive Config Generator (.env Export)
+
+Instead of hand-writing your `.env` settings, you can configure the screensaver visually:
+1. Open the configuration deck by loading the app in setup mode: `http://localhost:3000/?setup=true`
+2. Fill in your Home Assistant URL, Access Token, and entity mappings in the **Home Assistant & FoxESS Modbus** config card.
+3. Tweak your preferences (typography styles, timeouts, night mode brightness thresholds, and coordinates).
+4. Click **"Test Connection"** to validate that HAura can successfully query your HA telemetry.
+5. Once your integration verifies successfully, click the **"Export .env"** button in the top-right header menu.
+6. Copy the generated configuration snippet, paste it directly into your root `.env` file, and restart the dev server to apply!
+
 > [!IMPORTANT]
 > **CORS / Mixed Content Warning**
 >
