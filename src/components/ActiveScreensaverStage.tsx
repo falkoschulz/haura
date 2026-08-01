@@ -33,6 +33,7 @@ import {
 import { ScreensaverSettings, WeatherData, PaletteId } from '../types';
 import { FONT_STYLES, COLOR_PALETTES } from '../constants';
 import { HomeAssistantData } from '../hooks/useHomeAssistant';
+import PowerFlowDiagram from './PowerFlowDiagram.tsx';
 
 interface ActiveScreensaverStageProps {
   settings: ScreensaverSettings;
@@ -552,54 +553,58 @@ export default function ActiveScreensaverStage({
               </div>
             )}
 
-             {/* FoxESS Modbus Smart Power Segment (Thinner, No Header) */}
+             {/* FoxESS Modbus Smart Power Segment */}
             {haData ? (
-              <div className={`flex-1 flex flex-col justify-center bg-zinc-900/25 backdrop-blur-md border border-zinc-900/60 p-4 rounded-2xl ${dimmed ? 'border-red-950/40 text-red-700/80 bg-black/40' : ''}`}>
-                <div className="grid grid-cols-4 gap-1 divide-x divide-zinc-800/30 text-center">
-                  {/* Battery Level SoC */}
-                  <div className="flex flex-col items-center">
-                    {renderBatteryIcon(haData.batterySoc, haData.invBatPower, dimmed)}
-                    <span className={`text-sm font-light tracking-tight ${dimmed ? 'text-red-500' : 'text-zinc-200'}`}>
-                      {haData.batterySoc}%
-                    </span>
-                    <span className="text-[8px] font-mono uppercase tracking-widest mt-0.5 text-zinc-500">
-                      SoC Level
-                    </span>
-                  </div>
+              <div className={`flex-1 flex flex-col justify-center bg-zinc-900/25 backdrop-blur-md border border-zinc-900/60 p-3 rounded-2xl relative ${dimmed ? 'border-red-950/40 text-red-700/80 bg-black/40' : ''}`}>
+                {settings.telemetryDisplayMode !== 'stats' ? (
+                  <PowerFlowDiagram haData={haData} inverterSize={settings.inverterSize || 10.0} dimmed={dimmed} />
+                ) : (
+                  <div className="grid grid-cols-4 gap-1 divide-x divide-zinc-800/30 text-center">
+                    {/* Battery Level SoC */}
+                    <div className="flex flex-col items-center">
+                      {renderBatteryIcon(haData.batterySoc, haData.invBatPower, dimmed)}
+                      <span className={`text-sm font-light tracking-tight ${dimmed ? 'text-red-500' : 'text-zinc-200'}`}>
+                        {haData.batterySoc}%
+                      </span>
+                      <span className="text-[8px] font-mono uppercase tracking-widest mt-0.5 text-zinc-500">
+                        SoC Level
+                      </span>
+                    </div>
 
-                  {/* Today's Solar PV Harvest */}
-                  <div className="flex flex-col items-center">
-                    {renderSolarIcon(haData.solarToday, settings.inverterSize || 10.0, dimmed)}
-                    <span className={`text-sm font-light tracking-tight ${dimmed ? 'text-red-500' : 'text-zinc-200'}`}>
-                      {haData.solarToday.toFixed(1)} <span className="text-[9px] text-zinc-550">kWh</span>
-                    </span>
-                    <span className="text-[8px] font-mono uppercase tracking-widest mt-0.5 text-zinc-500">
-                      Solar Day
-                    </span>
-                  </div>
+                    {/* Today's Solar PV Harvest */}
+                    <div className="flex flex-col items-center">
+                      {renderSolarIcon(haData.solarToday, settings.inverterSize || 10.0, dimmed)}
+                      <span className={`text-sm font-light tracking-tight ${dimmed ? 'text-red-500' : 'text-zinc-200'}`}>
+                        {haData.solarToday.toFixed(1)} <span className="text-[9px] text-zinc-550">kWh</span>
+                      </span>
+                      <span className="text-[8px] font-mono uppercase tracking-widest mt-0.5 text-zinc-500">
+                        Solar Day
+                      </span>
+                    </div>
 
-                  {/* Grid Power Exchange */}
-                  <div className="flex flex-col items-center">
-                    {renderGridIcon(haData.gridCt, settings.inverterSize || 10.0, dimmed)}
-                    <span className={`text-sm font-light tracking-tight ${dimmed ? 'text-red-500' : 'text-zinc-200'}`}>
-                      {Math.abs(haData.gridCt).toFixed(2)} <span className="text-[9px] text-zinc-550">kW</span>
-                    </span>
-                    <span className="text-[8px] font-mono uppercase tracking-widest mt-0.5 text-zinc-500">
-                      {Math.abs(haData.gridCt) < 0.15 ? 'Idle' : (haData.gridCt > 0 ? 'Export' : 'Import')}
-                    </span>
-                  </div>
+                    {/* Grid Power Exchange */}
+                    <div className="flex flex-col items-center">
+                      {renderGridIcon(haData.gridCt, settings.inverterSize || 10.0, dimmed)}
+                      <span className={`text-sm font-light tracking-tight ${dimmed ? 'text-red-500' : 'text-zinc-200'}`}>
+                        {Math.abs(haData.gridCt).toFixed(2)} <span className="text-[9px] text-zinc-550">kW</span>
+                      </span>
+                      <span className="text-[8px] font-mono uppercase tracking-widest mt-0.5 text-zinc-500">
+                        {Math.abs(haData.gridCt) < 0.15 ? 'Idle' : (haData.gridCt > 0 ? 'Export' : 'Import')}
+                      </span>
+                    </div>
 
-                  {/* Current Load power usage */}
-                  <div className="flex flex-col items-center">
-                    {renderHouseLoadIcon(haData.houseLoad, settings.inverterSize || 10.0, dimmed)}
-                    <span className={`text-sm font-light tracking-tight ${dimmed ? 'text-red-500' : 'text-zinc-200'}`}>
-                      {haData.houseLoad.toFixed(2)} <span className="text-[9px] text-zinc-550">kW</span>
-                    </span>
-                    <span className="text-[8px] font-mono uppercase tracking-widest mt-0.5 text-zinc-500">
-                      House Load
-                    </span>
+                    {/* Current Load power usage */}
+                    <div className="flex flex-col items-center">
+                      {renderHouseLoadIcon(haData.houseLoad, settings.inverterSize || 10.0, dimmed)}
+                      <span className={`text-sm font-light tracking-tight ${dimmed ? 'text-red-500' : 'text-zinc-200'}`}>
+                        {haData.houseLoad.toFixed(2)} <span className="text-[9px] text-zinc-550">kW</span>
+                      </span>
+                      <span className="text-[8px] font-mono uppercase tracking-widest mt-0.5 text-zinc-500">
+                        House Load
+                      </span>
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             ) : (
               <div className="flex-1 flex items-center justify-center p-4 bg-zinc-900/25 backdrop-blur-md border border-zinc-900/60 rounded-2xl text-xs text-zinc-650 font-mono animate-pulse uppercase tracking-widest">

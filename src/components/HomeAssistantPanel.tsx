@@ -15,7 +15,8 @@ import {
   Info,
   Sliders,
   CheckCircle2,
-  AlertCircle
+  AlertCircle,
+  ArrowRightLeft
 } from 'lucide-react';
 
 interface HomeAssistantPanelProps {
@@ -332,6 +333,52 @@ export default function HomeAssistantPanel({
               />
             </div>
 
+            {/* Battery Power Flow (Charge/Discharge) Slider */}
+            <div>
+              <div className="flex justify-between items-center text-xs font-medium text-gray-300 mb-1.5">
+                <span className="flex items-center gap-1">
+                  <Battery className="w-3.5 h-3.5 text-teal-400" />
+                  Battery Power (Discharge + / Charge -)
+                </span>
+                <span className="font-mono text-teal-400 font-semibold">
+                  {settings.simInvBatPower > 0.05 ? `Discharging +${settings.simInvBatPower.toFixed(1)} kW` : settings.simInvBatPower < -0.05 ? `Charging ${settings.simInvBatPower.toFixed(1)} kW` : 'Idle 0.0 kW'}
+                </span>
+              </div>
+              <input
+                id="sim-batpower-range"
+                type="range"
+                min="-6.0"
+                max="6.0"
+                step="0.1"
+                value={settings.simInvBatPower}
+                onChange={(e) => onUpdateSetting('simInvBatPower', Number(e.target.value))}
+                className="w-full h-1 bg-gray-800 rounded-lg appearance-none cursor-pointer accent-teal-400"
+              />
+            </div>
+
+            {/* Grid Power CT (Export/Import) Slider */}
+            <div>
+              <div className="flex justify-between items-center text-xs font-medium text-gray-300 mb-1.5">
+                <span className="flex items-center gap-1">
+                  <ArrowRightLeft className="w-3.5 h-3.5 text-emerald-400" />
+                  Grid Exchange (Export + / Import -)
+                </span>
+                <span className="font-mono font-semibold text-emerald-400">
+                  {Math.abs(settings.simGridCt) < 0.15 ? 'Idle 0.0 kW' : settings.simGridCt > 0 ? `Export +${settings.simGridCt.toFixed(1)} kW` : `Import ${settings.simGridCt.toFixed(1)} kW`}
+                </span>
+              </div>
+              <input
+                id="sim-gridct-range"
+                type="range"
+                min="-8.0"
+                max="8.0"
+                step="0.1"
+                value={settings.simGridCt}
+                onChange={(e) => onUpdateSetting('simGridCt', Number(e.target.value))}
+                className="w-full h-1 bg-gray-800 rounded-lg appearance-none cursor-pointer accent-emerald-400"
+              />
+            </div>
+
             {/* Daily Solar Harvest Slider */}
             <div>
               <div className="flex justify-between items-center text-xs font-medium text-gray-300 mb-1.5">
@@ -461,7 +508,24 @@ export default function HomeAssistantPanel({
           </span>
         </div>
 
-        <div className="grid grid-cols-1 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">
+              Telemetry Visualizer Mode
+            </label>
+            <select
+              value={settings.telemetryDisplayMode || 'flow'}
+              onChange={(e) => onUpdateSetting('telemetryDisplayMode', e.target.value as 'flow' | 'stats')}
+              className="w-full bg-gray-950 text-xs text-gray-300 border border-gray-800 rounded-lg p-2 outline-none focus:border-indigo-500/60 font-mono transition-all"
+            >
+              <option value="flow">Animated Power Flow Diagram</option>
+              <option value="stats">Compact Telemetry Stat Cards</option>
+            </select>
+            <p className="text-[9px] text-gray-500 mt-1">
+              Select between multi-directional animated power flow curves or compact stat pills on your screensaver.
+            </p>
+          </div>
+
           <div>
             <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">
               Inverter Size (kW)

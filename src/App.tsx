@@ -83,7 +83,8 @@ export default function App() {
       simOutdoorTemp: envNum('VITE_SIM_OUTDOOR_TEMP', 18.2),
       simIndoorTempOffline: envBool('VITE_SIM_INDOOR_TEMP_OFFLINE', false),
       simOutdoorTempOffline: envBool('VITE_SIM_OUTDOOR_TEMP_OFFLINE', false),
-      inverterSize: envNum('VITE_INVERTER_SIZE', 10.0)
+      inverterSize: envNum('VITE_INVERTER_SIZE', 10.0),
+      telemetryDisplayMode: (envString('VITE_TELEMETRY_DISPLAY_MODE', 'flow') as 'flow' | 'stats')
     };
   });
 

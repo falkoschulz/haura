@@ -97,4 +97,5 @@ export interface ScreensaverSettings {
   simIndoorTempOffline: boolean;
   simOutdoorTempOffline: boolean;
   inverterSize: number;
+  telemetryDisplayMode: 'flow' | 'stats';
 }

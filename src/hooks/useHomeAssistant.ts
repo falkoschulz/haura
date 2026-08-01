@@ -6,6 +6,7 @@ export interface HomeAssistantData {
   invBatPower: number; // kW
   gridCt: number; // kW
   solarToday: number; // kWh
+  solarPower: number; // kW
   houseLoad: number;  // kW
   indoorTemp: number | null; // C/F
   outdoorTemp: number | null; // C/F
@@ -16,11 +17,14 @@ export interface HomeAssistantData {
 }
 
 export function useHomeAssistant(settings: ScreensaverSettings, addActivityLog: (msg: string) => void) {
+  const calcSimSolarPower = Math.max(0, settings.simHouseLoad + settings.simGridCt - settings.simInvBatPower);
+
   const [data, setData] = useState<HomeAssistantData>({
     batterySoc: settings.simBatterySoc,
     invBatPower: settings.simInvBatPower,
     gridCt: settings.simGridCt,
     solarToday: settings.simSolarToday,
+    solarPower: calcSimSolarPower,
     houseLoad: settings.simHouseLoad,
     indoorTemp: settings.simIndoorTempOffline ? null : settings.simIndoorTemp,
     outdoorTemp: settings.simOutdoorTempOffline ? null : settings.simOutdoorTemp,
@@ -38,6 +42,7 @@ export function useHomeAssistant(settings: ScreensaverSettings, addActivityLog: 
         invBatPower: settings.simInvBatPower,
         gridCt: settings.simGridCt,
         solarToday: settings.simSolarToday,
+        solarPower: calcSimSolarPower,
         houseLoad: settings.simHouseLoad,
         indoorTemp: settings.simIndoorTempOffline ? null : settings.simIndoorTemp,
         outdoorTemp: settings.simOutdoorTempOffline ? null : settings.simOutdoorTemp,
@@ -115,12 +120,18 @@ export function useHomeAssistant(settings: ScreensaverSettings, addActivityLog: 
       const indoorTempNum = parseFloat(indoorRes.state);
       const outdoorTempNum = parseFloat(outdoorRes.state);
 
+      const validHouse = isNaN(houseLoadNum) ? 0 : houseLoadNum;
+      const validGrid = isNaN(gridCtNum) ? 0 : gridCtNum;
+      const validBat = isNaN(invBatPowerNum) ? 0 : invBatPowerNum;
+      const calculatedSolarPower = Math.max(0, validHouse + validGrid - validBat);
+
       setData({
         batterySoc: isNaN(batterySocNum) ? 0 : batterySocNum,
-        invBatPower: isNaN(invBatPowerNum) ? 0 : invBatPowerNum,
-        gridCt: isNaN(gridCtNum) ? 0 : gridCtNum,
+        invBatPower: validBat,
+        gridCt: validGrid,
         solarToday: isNaN(solarTodayNum) ? 0 : solarTodayNum,
-        houseLoad: isNaN(houseLoadNum) ? 0 : houseLoadNum,
+        solarPower: Number(calculatedSolarPower.toFixed(2)),
+        houseLoad: validHouse,
         indoorTemp: isNaN(indoorTempNum) ? null : indoorTempNum,
         outdoorTemp: isNaN(outdoorTempNum) ? null : outdoorTempNum,
         isLive: true,
@@ -143,6 +154,7 @@ export function useHomeAssistant(settings: ScreensaverSettings, addActivityLog: 
         invBatPower: settings.simInvBatPower,
         gridCt: settings.simGridCt,
         solarToday: settings.simSolarToday,
+        solarPower: calcSimSolarPower,
         houseLoad: settings.simHouseLoad,
         indoorTemp: settings.simIndoorTempOffline ? null : settings.simIndoorTemp,
         outdoorTemp: settings.simOutdoorTempOffline ? null : settings.simOutdoorTemp,
