@@ -26,6 +26,7 @@ import {
   Battery,
   BatteryWarning,
   Zap,
+  ZapOff,
   Home,
   ArrowRightLeft
 } from 'lucide-react';
@@ -156,17 +157,22 @@ const renderSolarIcon = (solarToday: number, maxSolar: number, dimmed: boolean) 
 };
 
 const renderGridIcon = (gridCt: number, inverterSize: number, dimmed: boolean) => {
-  const isExport = gridCt > 0;
   const absGrid = Math.abs(gridCt);
+  const isIdle = absGrid < 0.15;
+  const isExport = gridCt >= 0.15;
   const ratio = Math.min(1.0, absGrid / (inverterSize || 10.0));
   
-  let colorClass = isExport ? 'text-emerald-400' : 'text-purple-400';
+  let colorClass = isIdle
+    ? 'text-zinc-500'
+    : isExport
+      ? 'text-emerald-400'
+      : 'text-purple-400';
   if (dimmed) {
     colorClass = 'text-red-700/80';
   }
 
   const animDuration = Math.max(0.3, 2.5 * (1 - ratio));
-  const hasFlow = absGrid > 0.05;
+  const hasFlow = !isIdle && absGrid > 0.05;
 
   return (
     <motion.div
@@ -181,7 +187,11 @@ const renderGridIcon = (gridCt: number, inverterSize: number, dimmed: boolean) =
         ease: "easeInOut"
       } : {}}
     >
-      <ArrowRightLeft className={`w-7 h-7 ${colorClass}`} />
+      {isIdle ? (
+        <ZapOff className={`w-7 h-7 ${colorClass}`} />
+      ) : (
+        <ArrowRightLeft className={`w-7 h-7 ${colorClass}`} />
+      )}
     </motion.div>
   );
 };
@@ -575,7 +585,7 @@ export default function ActiveScreensaverStage({
                       {Math.abs(haData.gridCt).toFixed(2)} <span className="text-[9px] text-zinc-550">kW</span>
                     </span>
                     <span className="text-[8px] font-mono uppercase tracking-widest mt-0.5 text-zinc-500">
-                      {haData.gridCt > 0 ? 'Export' : 'Import'}
+                      {Math.abs(haData.gridCt) < 0.15 ? 'Idle' : (haData.gridCt > 0 ? 'Export' : 'Import')}
                     </span>
                   </div>
 

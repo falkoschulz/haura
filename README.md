@@ -142,15 +142,34 @@ To run HAura as a permanent, dedicated screensaver on an Android wall tablet, we
 
 ---
 
-## 🛠️ Production Build
+## 🛠️ Production Build & Deployment
 
+### Build Locally
 To compile and optimize the application for a standalone web server deployment:
 
 ```bash
 npm run build
 ```
 
-This generates a static build in the `/dist` directory, which can be hosted on any static file server, Nginx, or GitHub Pages.
+This generates a static build in the `/dist` directory.
+
+### Automated SFTP Deployment
+
+You can automatically compile and upload the app to your server (e.g., `192.168.0.5`) over SFTP:
+
+1. Configure your server credentials in `.env`:
+   ```env
+   SFTP_HOST="192.168.0.5"
+   SFTP_PORT="22"
+   SFTP_USER="your_username"
+   SFTP_PASSWORD="your_password"
+   SFTP_REMOTE_PATH="/var/www/html/haura"
+   ```
+2. Run the deployment script:
+   ```bash
+   npm run deploy
+   ```
+   *This will run `npm run build` first, then upload the build output from `/dist` directly to your remote server path via SFTP.*
 
 ---
 
