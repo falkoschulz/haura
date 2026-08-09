@@ -64,7 +64,7 @@ const renderBatteryIcon = (soc: number, invBatPower: number, dimmed: boolean) =>
       animate={isLow && !isCharging ? { scale: [1, 1.15, 1], opacity: [0.6, 1, 0.6] } : {}}
       transition={isLow && !isCharging ? { duration: 1, repeat: Infinity, ease: "easeInOut" } : {}}
     >
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-7 h-7">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-8 h-8">
         <rect x="2" y="6" width="17" height="12" rx="2.5" stroke={dimmed ? "#b91c1c" : "#2dd4bf"} strokeWidth="2" className={dimmed ? 'stroke-red-800' : 'stroke-teal-400'} />
         <path d="M21 10C21.5523 10 22 10.4477 22 11V13C22 13.5523 21.5523 14 21 14H20V10H21Z" fill={dimmed ? "#b91c1c" : "#2dd4bf"} className={dimmed ? 'fill-red-800' : 'fill-teal-400'} />
         {Array.from({ length: 4 }).map((_, idx) => {
@@ -130,7 +130,7 @@ const renderSolarIcon = (solarToday: number, maxSolar: number, dimmed: boolean) 
 
   return (
     <motion.div
-      className="relative flex items-center justify-center w-7 h-7 mb-1.5"
+      className="relative flex items-center justify-center w-8 h-8 mb-1.5"
       animate={{ 
         rotate: hasSolar ? 360 : 0,
         scale: hasSolar ? [1, 1 + (solarRatio * 0.08), 1] : 1
@@ -149,9 +149,9 @@ const renderSolarIcon = (solarToday: number, maxSolar: number, dimmed: boolean) 
       }}
     >
       {hasSolar ? (
-        <Sun className={`w-7 h-7 ${sunColorClass}`} />
+        <Sun className={`w-8 h-8 ${sunColorClass}`} />
       ) : (
-        <Moon className={`w-7 h-7 ${dimmed ? 'text-indigo-900/80' : 'text-indigo-400/70'}`} />
+        <Moon className={`w-8 h-8 ${dimmed ? 'text-indigo-900/80' : 'text-indigo-400/70'}`} />
       )}
     </motion.div>
   );
@@ -177,7 +177,7 @@ const renderGridIcon = (gridCt: number, inverterSize: number, dimmed: boolean) =
 
   return (
     <motion.div
-      className="relative flex items-center justify-center w-7 h-7 mb-1.5"
+      className="relative flex items-center justify-center w-8 h-8 mb-1.5"
       animate={hasFlow ? {
         x: isExport ? [0, 2, 0] : [0, -2, 0],
         opacity: [0.7, 1, 0.7]
@@ -189,9 +189,9 @@ const renderGridIcon = (gridCt: number, inverterSize: number, dimmed: boolean) =
       } : {}}
     >
       {isIdle ? (
-        <ZapOff className={`w-7 h-7 ${colorClass}`} />
+        <ZapOff className={`w-8 h-8 ${colorClass}`} />
       ) : (
-        <ArrowRightLeft className={`w-7 h-7 ${colorClass}`} />
+        <ArrowRightLeft className={`w-8 h-8 ${colorClass}`} />
       )}
     </motion.div>
   );
@@ -209,7 +209,7 @@ const renderHouseLoadIcon = (houseLoad: number, inverterSize: number, dimmed: bo
 
   return (
     <motion.div
-      className="relative flex items-center justify-center w-7 h-7 mb-1.5"
+      className="relative flex items-center justify-center w-8 h-8 mb-1.5"
       animate={{
         scale: [1, 1.15, 1],
         x: isHighLoad ? [-1, 1, -1, 1, 0] : 0,
@@ -233,7 +233,7 @@ const renderHouseLoadIcon = (houseLoad: number, inverterSize: number, dimmed: bo
         } : {}
       }}
     >
-      <Zap className={`w-7 h-7 ${loadColorClass}`} />
+      <Zap className={`w-8 h-8 ${loadColorClass}`} />
     </motion.div>
   );
 };
@@ -563,10 +563,10 @@ export default function ActiveScreensaverStage({
                     {/* Battery Level SoC */}
                     <div className="flex flex-col items-center">
                       {renderBatteryIcon(haData.batterySoc, haData.invBatPower, dimmed)}
-                      <span className={`text-sm font-light tracking-tight ${dimmed ? 'text-red-500' : 'text-zinc-200'}`}>
+                      <span className={`text-base font-semibold tracking-tight ${dimmed ? 'text-red-500' : 'text-zinc-200'}`}>
                         {haData.batterySoc}%
                       </span>
-                      <span className="text-[8px] font-mono uppercase tracking-widest mt-0.5 text-zinc-500">
+                      <span className="text-[9.5px] font-mono uppercase tracking-widest mt-1 text-zinc-400 font-medium">
                         SoC Level
                       </span>
                     </div>
@@ -574,10 +574,10 @@ export default function ActiveScreensaverStage({
                     {/* Today's Solar PV Harvest */}
                     <div className="flex flex-col items-center">
                       {renderSolarIcon(haData.solarToday, settings.inverterSize || 10.0, dimmed)}
-                      <span className={`text-sm font-light tracking-tight ${dimmed ? 'text-red-500' : 'text-zinc-200'}`}>
-                        {haData.solarToday.toFixed(1)} <span className="text-[9px] text-zinc-550">kWh</span>
+                      <span className={`text-base font-semibold tracking-tight ${dimmed ? 'text-red-500' : 'text-zinc-200'}`}>
+                        {haData.solarToday.toFixed(1)} <span className="text-[10px] text-zinc-400">kWh</span>
                       </span>
-                      <span className="text-[8px] font-mono uppercase tracking-widest mt-0.5 text-zinc-500">
+                      <span className="text-[9.5px] font-mono uppercase tracking-widest mt-1 text-zinc-400 font-medium">
                         Solar Day
                       </span>
                     </div>
@@ -585,10 +585,10 @@ export default function ActiveScreensaverStage({
                     {/* Grid Power Exchange */}
                     <div className="flex flex-col items-center">
                       {renderGridIcon(haData.gridCt, settings.inverterSize || 10.0, dimmed)}
-                      <span className={`text-sm font-light tracking-tight ${dimmed ? 'text-red-500' : 'text-zinc-200'}`}>
-                        {Math.abs(haData.gridCt).toFixed(2)} <span className="text-[9px] text-zinc-550">kW</span>
+                      <span className={`text-base font-semibold tracking-tight ${dimmed ? 'text-red-500' : 'text-zinc-200'}`}>
+                        {Math.abs(haData.gridCt).toFixed(2)} <span className="text-[10px] text-zinc-400">kW</span>
                       </span>
-                      <span className="text-[8px] font-mono uppercase tracking-widest mt-0.5 text-zinc-500">
+                      <span className="text-[9.5px] font-mono uppercase tracking-widest mt-1 text-zinc-400 font-medium">
                         {Math.abs(haData.gridCt) < 0.15 ? 'Idle' : (haData.gridCt > 0 ? 'Export' : 'Import')}
                       </span>
                     </div>
@@ -596,10 +596,10 @@ export default function ActiveScreensaverStage({
                     {/* Current Load power usage */}
                     <div className="flex flex-col items-center">
                       {renderHouseLoadIcon(haData.houseLoad, settings.inverterSize || 10.0, dimmed)}
-                      <span className={`text-sm font-light tracking-tight ${dimmed ? 'text-red-500' : 'text-zinc-200'}`}>
-                        {haData.houseLoad.toFixed(2)} <span className="text-[9px] text-zinc-550">kW</span>
+                      <span className={`text-base font-semibold tracking-tight ${dimmed ? 'text-red-500' : 'text-zinc-200'}`}>
+                        {haData.houseLoad.toFixed(2)} <span className="text-[10px] text-zinc-400">kW</span>
                       </span>
-                      <span className="text-[8px] font-mono uppercase tracking-widest mt-0.5 text-zinc-500">
+                      <span className="text-[9.5px] font-mono uppercase tracking-widest mt-1 text-zinc-400 font-medium">
                         House Load
                       </span>
                     </div>

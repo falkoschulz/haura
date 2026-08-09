@@ -153,7 +153,7 @@ const renderAnimatedBattery = (soc: number, invBatPower: number, dimmed: boolean
       animate={isLow && !isCharging ? { scale: [1, 1.15, 1], opacity: [0.6, 1, 0.6] } : {}}
       transition={isLow && !isCharging ? { duration: 1, repeat: Infinity, ease: 'easeInOut' } : {}}
     >
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <rect x="2" y="6" width="17" height="12" rx="2.5" stroke={dimmed ? '#b91c1c' : '#2dd4bf'} strokeWidth="2" className={dimmed ? 'stroke-red-800' : 'stroke-teal-400'} />
         <path d="M21 10C21.5523 10 22 10.4477 22 11V13C22 13.5523 21.5523 14 21 14H20V10H21Z" fill={dimmed ? '#b91c1c' : '#2dd4bf'} className={dimmed ? 'fill-red-800' : 'fill-teal-400'} />
         {Array.from({ length: 4 }).map((_, idx) => {
@@ -227,9 +227,9 @@ const renderAnimatedSolar = (solarPower: number, inverterSize: number, dimmed: b
       }}
     >
       {isSolarActive ? (
-        <Sun className={`w-4.5 h-4.5 ${dimmed ? 'text-red-700/80' : 'text-amber-400'}`} />
+        <Sun className={`w-6 h-6 ${dimmed ? 'text-red-700/80' : 'text-amber-400'}`} />
       ) : (
-        <Moon className={`w-4.5 h-4.5 ${dimmed ? 'text-indigo-900/80' : 'text-zinc-400'}`} />
+        <Moon className={`w-6 h-6 ${dimmed ? 'text-indigo-900/80' : 'text-zinc-400'}`} />
       )}
     </motion.div>
   );
@@ -268,9 +268,9 @@ const renderAnimatedGrid = (gridCt: number, inverterSize: number, dimmed: boolea
       }
     >
       {isIdle ? (
-        <ZapOff className={`w-4.5 h-4.5 ${colorClass}`} />
+        <ZapOff className={`w-6 h-6 ${colorClass}`} />
       ) : (
-        <ArrowRightLeft className={`w-4.5 h-4.5 ${colorClass}`} />
+        <ArrowRightLeft className={`w-6 h-6 ${colorClass}`} />
       )}
     </motion.div>
   );
@@ -300,7 +300,7 @@ const renderAnimatedHouse = (houseLoad: number, inverterSize: number, dimmed: bo
         y: isHighLoad ? { repeat: Infinity, duration: 0.15, ease: 'linear' } : {},
       }}
     >
-      <Home className={`w-4.5 h-4.5 ${loadColorClass}`} />
+      <Home className={`w-6 h-6 ${loadColorClass}`} />
     </motion.div>
   );
 };
@@ -478,11 +478,11 @@ export const PowerFlowDiagram: React.FC<PowerFlowDiagramProps> = ({
       </div>
 
       {/* 2. BOTTOM SECTION: State Icons Row */}
-      <div className="w-full grid grid-cols-4 gap-0 text-center pt-1 border-t border-zinc-800/40">
+      <div className="w-full grid grid-cols-4 gap-0 text-center pt-1.5 border-t border-zinc-800/40">
         {/* Node 1: Battery (Leftmost) */}
         <div className="flex flex-col items-center">
           <div
-            className={`w-9 h-9 rounded-xl flex items-center justify-center border backdrop-blur-md shadow-md ${
+            className={`w-11 h-11 rounded-xl flex items-center justify-center border backdrop-blur-md shadow-md ${
               dimmed
                 ? 'bg-black/70 border-red-950/60 text-red-700'
                 : 'bg-teal-950/40 border-teal-500/40 text-teal-400'
@@ -490,10 +490,10 @@ export const PowerFlowDiagram: React.FC<PowerFlowDiagramProps> = ({
           >
             {renderAnimatedBattery(batterySoc, invBatPower, dimmed)}
           </div>
-          <span className={`text-[10.5px] font-semibold tracking-tight mt-1 ${dimmed ? 'text-red-500' : 'text-zinc-100'}`}>
-            {Math.abs(invBatPower).toFixed(2)} <span className="text-[7.5px] text-zinc-400">kW</span>
+          <span className={`text-xs sm:text-[13px] font-bold tracking-tight mt-1.5 ${dimmed ? 'text-red-500' : 'text-zinc-100'}`}>
+            {Math.abs(invBatPower).toFixed(2)} <span className="text-[9px] text-zinc-400 font-medium">kW</span>
           </span>
-          <span className="text-[7px] font-mono uppercase tracking-widest text-teal-400/90 font-medium">
+          <span className="text-[8.5px] font-mono uppercase tracking-wider text-teal-400/90 font-semibold mt-0.5">
             Battery {batterySoc}%
           </span>
         </div>
@@ -501,7 +501,7 @@ export const PowerFlowDiagram: React.FC<PowerFlowDiagramProps> = ({
         {/* Node 2: Solar PV (Mid Left) */}
         <div className="flex flex-col items-center">
           <div
-            className={`w-9 h-9 rounded-xl flex items-center justify-center border backdrop-blur-md shadow-md ${
+            className={`w-11 h-11 rounded-xl flex items-center justify-center border backdrop-blur-md shadow-md ${
               dimmed
                 ? 'bg-black/70 border-red-950/60 text-red-700'
                 : isSolarActive
@@ -511,10 +511,10 @@ export const PowerFlowDiagram: React.FC<PowerFlowDiagramProps> = ({
           >
             {renderAnimatedSolar(solarPower, inverterSize, dimmed)}
           </div>
-          <span className={`text-[10.5px] font-semibold tracking-tight mt-1 ${dimmed ? 'text-red-500' : 'text-zinc-100'}`}>
-            {solarPower.toFixed(2)} <span className="text-[7.5px] text-zinc-400">kW</span>
+          <span className={`text-xs sm:text-[13px] font-bold tracking-tight mt-1.5 ${dimmed ? 'text-red-500' : 'text-zinc-100'}`}>
+            {solarPower.toFixed(2)} <span className="text-[9px] text-zinc-400 font-medium">kW</span>
           </span>
-          <span className={`text-[7px] font-mono uppercase tracking-widest font-medium ${
+          <span className={`text-[8.5px] font-mono uppercase tracking-wider font-semibold mt-0.5 ${
             isSolarActive ? 'text-amber-400/90' : 'text-zinc-500'
           }`}>
             {isSolarActive ? 'Solar PV' : 'Solar Idle'}
@@ -524,7 +524,7 @@ export const PowerFlowDiagram: React.FC<PowerFlowDiagramProps> = ({
         {/* Node 3: Grid Exchange (Mid Right) */}
         <div className="flex flex-col items-center">
           <div
-            className={`w-9 h-9 rounded-xl flex items-center justify-center border backdrop-blur-md shadow-md ${
+            className={`w-11 h-11 rounded-xl flex items-center justify-center border backdrop-blur-md shadow-md ${
               dimmed
                 ? 'bg-black/70 border-red-950/60 text-red-700'
                 : isGridExport
@@ -536,10 +536,10 @@ export const PowerFlowDiagram: React.FC<PowerFlowDiagramProps> = ({
           >
             {renderAnimatedGrid(gridCt, inverterSize, dimmed)}
           </div>
-          <span className={`text-[10.5px] font-semibold tracking-tight mt-1 ${dimmed ? 'text-red-500' : 'text-zinc-100'}`}>
-            {absGrid.toFixed(2)} <span className="text-[7.5px] text-zinc-400">kW</span>
+          <span className={`text-xs sm:text-[13px] font-bold tracking-tight mt-1.5 ${dimmed ? 'text-red-500' : 'text-zinc-100'}`}>
+            {absGrid.toFixed(2)} <span className="text-[9px] text-zinc-400 font-medium">kW</span>
           </span>
-          <span className={`text-[7px] font-mono uppercase tracking-widest font-medium ${
+          <span className={`text-[8.5px] font-mono uppercase tracking-wider font-semibold mt-0.5 ${
             isGridExport ? 'text-emerald-400' : isGridImport ? 'text-purple-400' : 'text-zinc-500'
           }`}>
             {!isGridActive ? 'Grid Idle' : isGridExport ? 'Export' : 'Import'}
@@ -549,7 +549,7 @@ export const PowerFlowDiagram: React.FC<PowerFlowDiagramProps> = ({
         {/* Node 4: House Load (Rightmost) */}
         <div className="flex flex-col items-center">
           <div
-            className={`w-9 h-9 rounded-xl flex items-center justify-center border backdrop-blur-md shadow-md ${
+            className={`w-11 h-11 rounded-xl flex items-center justify-center border backdrop-blur-md shadow-md ${
               dimmed
                 ? 'bg-black/70 border-red-950/60 text-red-700'
                 : 'bg-rose-950/40 border-rose-500/40 text-rose-400'
@@ -557,10 +557,10 @@ export const PowerFlowDiagram: React.FC<PowerFlowDiagramProps> = ({
           >
             {renderAnimatedHouse(houseLoad, inverterSize, dimmed)}
           </div>
-          <span className={`text-[10.5px] font-semibold tracking-tight mt-1 ${dimmed ? 'text-red-500' : 'text-zinc-100'}`}>
-            {houseLoad.toFixed(2)} <span className="text-[7.5px] text-zinc-400">kW</span>
+          <span className={`text-xs sm:text-[13px] font-bold tracking-tight mt-1.5 ${dimmed ? 'text-red-500' : 'text-zinc-100'}`}>
+            {houseLoad.toFixed(2)} <span className="text-[9px] text-zinc-400 font-medium">kW</span>
           </span>
-          <span className="text-[7px] font-mono uppercase tracking-widest text-rose-400/90 font-medium">
+          <span className="text-[8.5px] font-mono uppercase tracking-wider text-rose-400/90 font-semibold mt-0.5">
             House Load
           </span>
         </div>
