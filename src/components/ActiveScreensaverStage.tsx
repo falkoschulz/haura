@@ -491,26 +491,26 @@ export default function ActiveScreensaverStage({
           </div>
 
           {/* Responsive Side-by-Side Bento Widgets (Atmospheric + Local Energy) */}
-          <div className="flex flex-col md:flex-row items-stretch justify-center gap-6 mt-6 w-full max-w-4xl px-4 select-none">
+          <div className="flex flex-col md:flex-row items-stretch justify-center gap-4 sm:gap-6 mt-6 w-full max-w-5xl px-4 select-none">
             
-            {/* Atmospheric Segment */}
+            {/* Atmospheric Segment (40%) */}
             {weatherData ? (
-              <div className={`flex-1 flex items-center justify-center gap-5 bg-zinc-900/25 backdrop-blur-md border border-zinc-900/60 p-4 rounded-2xl ${dimmed ? 'border-red-950/40 text-red-700/80 bg-black/40' : ''}`}>
+              <div className={`w-full md:w-[40%] flex items-center justify-center gap-3 sm:gap-4 bg-zinc-900/25 backdrop-blur-md border border-zinc-900/60 p-3 sm:p-4 rounded-2xl ${dimmed ? 'border-red-950/40 text-red-700/80 bg-black/40' : ''}`}>
                 <div className="flex flex-col items-center justify-center gap-2 shrink-0">
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-2.5">
                     {dimmed ? (
-                      <Moon className="w-8 h-8 text-red-650 animate-pulse-subtle" />
+                      <Moon className="w-7 h-7 text-red-650 animate-pulse-subtle" />
                     ) : (
-                      renderWeatherIcon(weatherData.icon, "w-9 h-9 text-indigo-400")
+                      renderWeatherIcon(weatherData.icon, "w-8 h-8 text-indigo-400")
                     )}
-                    <span id="screensaver-weather-temp" className={`text-2xl font-light tracking-tight ${dimmed ? 'text-red-500' : 'text-zinc-100'}`}>
+                    <span id="screensaver-weather-temp" className={`text-xl sm:text-2xl font-light tracking-tight ${dimmed ? 'text-red-500' : 'text-zinc-100'}`}>
                       {weatherData.temp}&deg;{settings.temperatureUnit}
                     </span>
                   </div>
                   
                   {haData && (
-                    <div className={`flex items-center gap-4 mt-1 border-t ${dimmed ? 'border-red-900/30' : 'border-zinc-800/40'} pt-2 w-full justify-center`}>
-                      <div className="flex items-center gap-1.5" title="Indoor Temperature">
+                    <div className={`flex items-center gap-3 mt-1 border-t ${dimmed ? 'border-red-900/30' : 'border-zinc-800/40'} pt-1.5 w-full justify-center`}>
+                      <div className="flex items-center gap-1" title="Indoor Temperature">
                         <Home className={`w-3.5 h-3.5 ${dimmed ? 'text-red-700' : 'text-slate-400'}`} />
                         {haData.indoorTemp === null ? (
                           <BatteryWarning className="w-3.5 h-3.5 text-red-500" title="Sensor Offline/Battery Dead" />
@@ -520,7 +520,7 @@ export default function ActiveScreensaverStage({
                           </span>
                         )}
                       </div>
-                      <div className="flex items-center gap-1.5" title="Outdoor Temperature">
+                      <div className="flex items-center gap-1" title="Outdoor Temperature">
                         <CloudSun className={`w-3.5 h-3.5 ${dimmed ? 'text-red-700' : 'text-slate-400'}`} />
                         {haData.outdoorTemp === null ? (
                           <BatteryWarning className="w-3.5 h-3.5 text-red-500" title="Sensor Offline/Battery Dead" />
@@ -548,14 +548,14 @@ export default function ActiveScreensaverStage({
                 </div>
               </div>
             ) : (
-              <div className="flex-1 flex items-center justify-center p-4 bg-zinc-900/25 backdrop-blur-md border border-zinc-900/60 rounded-2xl text-xs text-zinc-650 font-mono animate-pulse uppercase tracking-widest">
+              <div className="w-full md:w-[40%] flex items-center justify-center p-4 bg-zinc-900/25 backdrop-blur-md border border-zinc-900/60 rounded-2xl text-xs text-zinc-650 font-mono animate-pulse uppercase tracking-widest">
                 Syncing weather sensors...
               </div>
             )}
 
-             {/* FoxESS Modbus Smart Power Segment */}
+             {/* FoxESS Modbus Smart Power Segment (60%) */}
             {haData ? (
-              <div className={`flex-1 flex flex-col justify-center bg-zinc-900/25 backdrop-blur-md border border-zinc-900/60 p-3 rounded-2xl relative ${dimmed ? 'border-red-950/40 text-red-700/80 bg-black/40' : ''}`}>
+              <div className={`w-full md:w-[60%] flex flex-col justify-center bg-zinc-900/25 backdrop-blur-md border border-zinc-900/60 p-3 sm:p-4 rounded-2xl relative ${dimmed ? 'border-red-950/40 text-red-700/80 bg-black/40' : ''}`}>
                 {settings.telemetryDisplayMode !== 'stats' ? (
                   <PowerFlowDiagram haData={haData} inverterSize={settings.inverterSize || 10.0} dimmed={dimmed} />
                 ) : (

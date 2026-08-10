@@ -482,26 +482,37 @@ export const PowerFlowDiagram: React.FC<PowerFlowDiagramProps> = ({
         {/* Node 1: Battery (Leftmost) */}
         <div className="flex flex-col items-center">
           <div
-            className={`w-11 h-11 rounded-xl flex items-center justify-center border backdrop-blur-md shadow-md ${
+            className={`w-13 h-14 sm:w-14 sm:h-14 rounded-xl flex flex-col items-center justify-center p-1 border backdrop-blur-md shadow-md ${
               dimmed
                 ? 'bg-black/70 border-red-950/60 text-red-700'
                 : 'bg-teal-950/40 border-teal-500/40 text-teal-400'
             }`}
           >
             {renderAnimatedBattery(batterySoc, invBatPower, dimmed)}
+            <span className={`text-xs sm:text-[13px] font-bold font-mono tracking-tight leading-none mt-0.5 ${
+              dimmed
+                ? 'text-red-500'
+                : batterySoc < 20
+                  ? 'text-rose-400'
+                  : batterySoc < 50
+                    ? 'text-amber-400'
+                    : 'text-teal-300'
+            }`}>
+              {batterySoc}%
+            </span>
           </div>
           <span className={`text-xs sm:text-[13px] font-bold tracking-tight mt-1.5 ${dimmed ? 'text-red-500' : 'text-zinc-100'}`}>
             {Math.abs(invBatPower).toFixed(2)} <span className="text-[9px] text-zinc-400 font-medium">kW</span>
           </span>
           <span className="text-[8.5px] font-mono uppercase tracking-wider text-teal-400/90 font-semibold mt-0.5">
-            Battery {batterySoc}%
+            Battery
           </span>
         </div>
 
         {/* Node 2: Solar PV (Mid Left) */}
         <div className="flex flex-col items-center">
           <div
-            className={`w-11 h-11 rounded-xl flex items-center justify-center border backdrop-blur-md shadow-md ${
+            className={`w-13 h-14 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center border backdrop-blur-md shadow-md ${
               dimmed
                 ? 'bg-black/70 border-red-950/60 text-red-700'
                 : isSolarActive
@@ -524,7 +535,7 @@ export const PowerFlowDiagram: React.FC<PowerFlowDiagramProps> = ({
         {/* Node 3: Grid Exchange (Mid Right) */}
         <div className="flex flex-col items-center">
           <div
-            className={`w-11 h-11 rounded-xl flex items-center justify-center border backdrop-blur-md shadow-md ${
+            className={`w-13 h-14 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center border backdrop-blur-md shadow-md ${
               dimmed
                 ? 'bg-black/70 border-red-950/60 text-red-700'
                 : isGridExport
@@ -549,7 +560,7 @@ export const PowerFlowDiagram: React.FC<PowerFlowDiagramProps> = ({
         {/* Node 4: House Load (Rightmost) */}
         <div className="flex flex-col items-center">
           <div
-            className={`w-11 h-11 rounded-xl flex items-center justify-center border backdrop-blur-md shadow-md ${
+            className={`w-13 h-14 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center border backdrop-blur-md shadow-md ${
               dimmed
                 ? 'bg-black/70 border-red-950/60 text-red-700'
                 : 'bg-rose-950/40 border-rose-500/40 text-rose-400'
